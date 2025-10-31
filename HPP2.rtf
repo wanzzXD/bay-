@@ -1,0 +1,182 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Calibri;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 enulis Aplikasi Django Pertamamu, Bagian 2\par
+Tutorial ini dimulai dari bagian pertama yang sudah kita bahas sebelumnya. Di sini, kita akan menyiapkan basis data, membuat model pertama, dan mendapatkan pengenalan singkat tentang situs admin otomatis yang dibuat oleh Django.\par
+Di Mana Mendapatkan Bantuan\par
+Jika kamu mengalami kesulitan saat mengikuti tutorial ini, kunjungi bagian \ldblquote Getting Help\rdblquote  pada FAQ Django untuk panduan lebih lanjut.\par
+2.4.1 Penyiapan Basis Data\par
+Sekarang, buka file mysite/settings.py.\par
+File ini adalah modul Python biasa yang berisi variabel-variabel tingkat modul yang mewakili settings (pengaturan) Django.\par
+Secara bawaan, konfigurasi DATABASES menggunakan SQLite.\par
+Jika kamu baru dalam dunia basis data, atau hanya ingin mencoba Django, pilihan ini paling mudah karena SQLite sudah disertakan di Python, sehingga kamu tidak perlu menginstal apa pun tambahan.\par
+Namun, jika kamu berencana membuat proyek nyata yang lebih besar, sebaiknya gunakan basis data yang lebih scalable seperti PostgreSQL, agar kamu tidak mengalami kesulitan saat berpindah basis data di masa depan.\par
+Jika kamu ingin menggunakan basis data lain, lihat bagian dokumentasi yang menjelaskan cara menyesuaikan dan menjalankannya.\par
+Saat masih berada di settings.py, atur juga variabel TIME_ZONE sesuai zona waktu kamu.\par
+Perhatikan juga pengaturan INSTALLED_APPS di bagian atas file.\par
+Daftar ini berisi nama-nama semua aplikasi Django yang aktif di proyek ini.\par
+Aplikasi bisa digunakan di berbagai proyek, dan kamu juga bisa mengemas serta mendistribusikannya agar orang lain dapat menggunakannya di proyek mereka.\par
+Secara bawaan, INSTALLED_APPS berisi\par
+django.contrib.admin \f1\emdash  situs admin (akan kita gunakan sebentar lagi)\par
+django.contrib.auth \emdash  sistem autentikasi\par
+django.contrib.contenttypes \emdash  kerangka kerja tipe konten\par
+django.contrib.sessions \emdash  sistem sesi pengguna\par
+django.contrib.messages \emdash  sistem pesan\par
+django.contrib.staticfiles \emdash  sistem manajemen berkas statis\par
+Aplikasi-aplikasi ini sudah disertakan untuk kenyamanan pengguna baru.\par
+Beberapa dari aplikasi tersebut membutuhkan tabel basis data agar berfungsi, jadi kita perlu membuat tabel-tabel tersebut terlebih dahulu.\par
+Untuk melakukannya, jalankan perintah berikut:\par
+$ python manage.py migrate\par
+Perintah migrate akan membaca pengaturan INSTALLED_APPS dan membuat tabel basis data yang diperlukan sesuai dengan konfigurasi yang ada di mysite/settings.py, serta menjalankan database migrations yang sudah disediakan oleh aplikasi-aplikasi tersebut.\par
+Kamu akan melihat pesan untuk setiap migrasi yang dijalankan.\par
+Jika kamu tertarik, coba buka client database kamu dan ketik:\par
+\\dt untuk PostgreSQL\par
+SHOW TABLES; untuk MariaDB/MySQL\par
+.tables untuk SQLite\par
+SELECT TABLE_NAME FROM USER_TABLES; untuk Oracle\par
+Ini akan menampilkan tabel-tabel yang dibuat oleh Django.\par
+Untuk Pengguna Minimalis\par
+Seperti disebutkan sebelumnya, aplikasi bawaan tersebut hanya disertakan untuk kasus umum.\par
+Namun jika kamu tidak membutuhkan salah satu atau beberapa di antaranya, kamu boleh menghapus atau menonaktifkannya di INSTALLED_APPS sebelum menjalankan migrate.\par
+Perintah migrate hanya akan menjalankan migrasi untuk aplikasi yang terdaftar di INSTALLED_APPS.\par
+2.4.2 Membuat Model\par
+Sekarang kita akan mendefinisikan model \emdash  yaitu tata letak basis data yang juga memuat metadata tambahan.\par
+Filsafat\par
+Sebuah model adalah sumber utama dan tunggal dari informasi tentang datamu.\par
+Model berisi semua field dan behavior penting dari data yang kamu simpan.\par
+Django mengikuti prinsip DRY (Don\rquote t Repeat Yourself) \emdash  tujuannya agar kamu hanya mendefinisikan struktur data di satu tempat, dan Django akan secara otomatis menurunkan (menghasilkan) hal-hal lain dari situ, termasuk migrasi database.\par
+Tidak seperti di framework lain seperti Ruby on Rails, migrasi di Django dihasilkan sepenuhnya dari file models.py, dan berfungsi sebagai riwayat perubahan yang bisa digunakan Django untuk memperbarui skema database agar sesuai dengan model terkini.\par
+Di aplikasi polls kita, akan ada dua model:\par
+Question (Pertanyaan) \emdash  berisi teks pertanyaan dan tanggal publikasi.\par
+Choice (Pilihan) \emdash  berisi teks pilihan dan jumlah suara (vote).\par
+Setiap Choice terhubung ke satu Question.\par
+Model-model ini direpresentasikan dengan kelas Python.\par
+Buka file polls/models.py, lalu ubah menjadi seperti berikut:\par
+from django.db import models\par
+\par
+class Question(models.Model):\par
+    question_text = models.CharField(max_length=200)\par
+    pub_date = models.DateTimeField("date published")\par
+\par
+class Choice(models.Model):\par
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)\par
+    choice_text = models.CharField(max_length=200)\par
+    votes = models.IntegerField(default=0)\par
+Dengan menambahkan metode __str__(), ketika kamu memanggil Question.objects.all(), Django akan menampilkan hasil yang lebih mudah dibaca, misalnya:\par
+2.4.4 Bermain dengan API Django\par
+Sekarang mari kita coba API Django yang baru saja dibuat. Django secara otomatis memberikan API Python lengkap untuk berinteraksi dengan data berdasarkan model yang kamu definisikan.\par
+Untuk memulai, buka shell interaktif Django dengan perintah berikut:\par
+$ python manage.py shell\par
+Kita menggunakan perintah ini alih-alih hanya mengetik python, karena manage.py akan mengatur variabel lingkungan DJANGO_SETTINGS_MODULE agar menunjuk ke mysite/settings.py.\par
+Dengan begitu, Django tahu di mana harus mencari konfigurasi proyekmu.\par
+Secara default, perintah shell juga akan mengimpor model dari semua aplikasi yang ada di INSTALLED_APPS, sehingga kamu bisa langsung menggunakannya\f0\par
+# Tidak ada pertanyaan di sistem saat ini.\par
+>>> Question.objects.all()\par
+<QuerySet []>\par
+\par
+# Buat satu pertanyaan baru.\par
+# Karena pengaturan default sudah mengaktifkan dukungan zona waktu (timezone),\par
+# kita harus menggunakan timezone.now() daripada datetime.now().\par
+>>> from django.utils import timezone\par
+>>> q = Question(question_text="Apa yang baru?", pub_date=timezone.now())\par
+\par
+# Simpan objek tersebut ke database.\par
+>>> q.save()\par
+\par
+# Sekarang objek tersebut memiliki ID.\par
+>>> q.id\par
+1\par
+\par
+# Akses nilai field seperti atribut Python biasa.\par
+>>> q.question_text\par
+"Apa yang baru?"\par
+>>> q.pub_date\par
+datetime.datetime(2025, 10, 30, 14, 0, 0, tzinfo=datetime.timezone.utc)\par
+\par
+# Ubah nilai lalu simpan lagi.\par
+>>> q.question_text = "Apa kabar?"\par
+>>> q.save()\par
+\par
+# Tampilkan semua pertanyaan dalam database.\par
+>>> Question.objects.all()\par
+<QuerySet [<Question: Question object (1)>]>\par
+\par
+Tunggu dulu \f1\emdash  hasil <Question: Question object (1)> kurang informatif, bukan?\par
+Kita bisa memperbaikinya dengan menambahkan metode khusus __str__() pada model.\par
+2.4.5 Menambahkan Metode __str__() ke Model\par
+Edit file polls/models.py, lalu ubah modelnya menjadi seperti berikut:\par
+from django.db import models\par
+\par
+class Question(models.Model):\par
+    question_text = models.CharField(max_length=200)\par
+    pub_date = models.DateTimeField("date published")\par
+\par
+    def __str__(self):\par
+        return self.question_text\par
+\par
+class Choice(models.Model):\par
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)\par
+    choice_text = models.CharField(max_length=200)\par
+    votes = models.IntegerField(default=0)\par
+\par
+    def __str__(self):\par
+        return self.choice_text\par
+Dengan menambahkan metode __str__(), ketika kamu memanggil Question.objects.all(), Django akan menampilkan hasil yang lebih mudah dibaca, misalnya:\par
+<QuerySet [<Question: Apa kabar?>]>\par
+2.4.6 Menambahkan Metode Kustom ke Model\f0\lang1033 :\f1\lang9\par
+Mari tambahkan metode baru pada model Question untuk memeriksa apakah pertanyaan dipublikasikan baru-baru ini. Tambahkan kode berikut ke dalam kelas Question:\par
+from django.utils import timezone\par
+import datetime\par
+class Question(models.Model):\par
+    question_text = models.CharField(max_length=200)\par
+    pub_date = models.DateTimeField("date published")\par
+    def __str__(self):\par
+        return self.question_text\par
+    def was_published_recently(self):\par
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)\par
+Metode ini akan mengembalikan True jika pertanyaan dipublikasikan dalam satu hari terakhir.\par
+Sekarang buka kembali shell Django dan coba:\par
+>>> from polls.models import Question\par
+>>> from django.utils import timezone\par
+>>> q = Question.objects.get(pk=1)\par
+>>> q.was_published_recently()\par
+True\par
+2.4.7 Menggunakan API Relasi (ForeignKey)\par
+Kita sudah mendefinisikan bahwa setiap Choice berelasi dengan satu Question.\par
+Django otomatis menyediakan API untuk menjelajahi hubungan ini.\par
+Mari kita lihat bagaimana cara menggunakannya di shell interaktif.\par
+>>> from polls.models import Choice\par
+>>> from polls.models import Choice\par
+>>> q = Question.objects.get(pk=1)\par
+# Tambahkan beberapa pilihan (Choice)\par
+>>> q.choice_set.create(choice_text="Tidak banyak", votes=0)\par
+>>> q.choice_set.create(choice_text="Sama saja", votes=0)\par
+>>> c = q.choice_set.create(choice_text="Tidak ada yang tahu", votes=0)\par
+# Gunakan API relasi untuk mengambil semua pilihan terkait\par
+>>> q.choice_set.all()\par
+<QuerySet [<Choice: Tidak banyak>, <Choice: Sama saja>, <Choice: Tidak ada yang tahu>]>\par
+# Ambil satu pilihan tertentu dan lihat relasi baliknya\par
+>>> q.choice_set.count()\par
+\f0\lang1033 3\f1\lang9\par
+>>> c.question\par
+<Question: Apa kabar?>\par
+# Gunakan filter\par
+>>> Choice.objects.filter(question__question_text__startswith="Apa")\par
+<QuerySet [<Choice: Tidak banyak>, <Choice: Sama saja>, <Choice: Tidak ada yang tahu>]>\par
+2.4.8 Penggunaan API: Ringkasan\par
+Berikut ringkasan API yang kita gunakan:\par
+Question.objects.all() \endash  Mengambil semua objek pertanyaan.\par
+Question.objects.filter(...) \endash  Menyaring objek berdasarkan kriteria tertentu.\par
+Choice.objects.create(...) \endash  Membuat dan menyimpan objek baru dalam satu langkah.\par
+question.choice_set.all() \endash  Mengambil semua choice yang berhubungan dengan pertanyaan tertentu.\par
+question.choice_set.create() \endash  Membuat choice baru yang otomatis terhubung ke pertanyaan tersebut.\par
+ForeignKey memungkinkan kita menjelajahi data dua arah \emdash  dari Choice ke Question dan sebaliknya.\par
+Semua ini adalah bagian dari ORM (Object-Relational Mapping) bawaan Django, yang mengubah data tabel basis data menjadi objek Python yang mudah digunakan.\par
+\f0\lang1033 2..4.9 Kesimpulan Sementara\par
+Kita sudah:\par
+Membuat model untuk pertanyaan dan pilihan.\par
+Mengaktifkannya di proyek Django.\par
+Menjalankan migrasi untuk membuat tabel di database.\par
+Bereksperimen dengan API database yang disediakan Django.\par
+Langkah berikutnya adalah menambahkan tampilan admin otomatis agar kita bisa menambahkan pertanyaan dan pilihan melalui antarmuka web\lang9\par
+}
+ 
