@@ -1,0 +1,59 @@
+soal:
+1.apa perbedaan file system linux dan windows?
+2.berikan gambar struktur file sistem linux dan windows?
+3.apa yang dimaksud direktori,folder,dan file?
+4.sebutkan 5 file extension dan jelaskan?
+5.sebutkan masing-masing 5 perintah mengakses file di linux dan windoes?
+6.apa perbedaan terminal dan command prompt?
+jawaban:
+1.Perbedaan utama file sistem Linux dan Windows terletak pada strukturnya, jenis sistem file yang digunakan, dan cara menangani partisi. Windows menggunakan struktur berbasis drive seperti C:\ dan D:\ dengan sistem file seperti NTFS atau FAT32, sementara Linux menggunakan struktur hierarkis tunggal (seperti pohon) dimulai dari direktori root (/) dan mendukung banyak sistem file seperti ext4 atau XFS. 
+Struktur dan Penamaan
+Windows: Menggunakan model drive letter (huruf drive) untuk setiap partisi, seperti C:\, D:\, dll.
+Linux: Menggunakan satu hierarki direktori tunggal yang dimulai dari root (/). Semua perangkat dan sistem file di-mount ke dalam struktur ini, seperti /dev/sda1 untuk partisi pertama pada drive pertama. 
+Sistem File
+Windows: Umumnya menggunakan sistem file seperti NTFS (New Technology File System) atau FAT32, terutama untuk partisi hard disk.
+Linux: Mendukung berbagai sistem file, termasuk ext4 (extended file system 4), XFS, Btrfs, dan juga bisa membaca sistem file Windows seperti FAT32 dan NTFS. 
+Perbedaan Lainnya
+Akses: Windows tidak bisa secara native membaca partisi sistem file Linux, tetapi Linux memiliki kemampuan untuk membaca dan menulis partisi Windows.
+Fleksibilitas: Linux lebih fleksibel karena arsitektur modularnya yang memungkinkan banyak sistem
+
+2.https://media.geeksforgeeks.org/wp-content/uploads/20230516105759/151.webp
+
+3.Direktori, folder, dan file adalah komponen dalam penyimpanan data digital yang bekerja sama untuk mengatur informasi. Direktori dan folder pada dasarnya merujuk pada konsep yang sama, yaitu sebuah wadah atau "map" virtual untuk menyimpan file dan folder lain, sementara file adalah unit data dasar yang berisi informasi spesifik seperti dokumen, gambar, atau musik. 
+File
+Pengertian: Unit dasar penyimpanan data di komputer yang berisi informasi atau data digital.
+Fungsi: Menyimpan konten seperti dokumen teks, gambar, video, audio, atau program aplikasi.
+Contoh: Sebuah file dokumen Word, file foto JPEG, atau file musik MP3. 
+Folder (atau Direktori)
+Pengertian: Sebuah wadah virtual untuk mengorganisir dan mengelompokkan file dan folder lain. Istilah "folder" lebih populer di sistem operasi seperti Windows, sedangkan "direktori" lebih umum dalam sistem operasi lain atau istilah yang lebih teknis
+
+4.1. .docx
+Jenis: Dokumen Microsoft Word.
+Penjelasan: Ini adalah format file dokumen standar yang digunakan oleh Microsoft Word, bagian dari Microsoft Office. Format ini mendukung berbagai fitur teks, seperti pemformatan, gambar, dan tabel. 
+2. .pdf
+Jenis: Dokumen Portable Document Format.
+Penjelasan: PDF dirancang agar dokumen dapat ditampilkan secara konsisten di berbagai perangkat dan sistem operasi. Konten di dalamnya tidak mudah diubah dan menjaga tata letak asli. 
+3. .jpg / .jpeg 
+Jenis: Gambar Joint Photographic Experts Group.
+Penjelasan: Ini adalah format gambar raster yang populer, sering digunakan untuk foto karena dapat mencapai kompresi yang baik dengan ukuran file yang relatif kecil. 
+4. .png
+Jenis: Gambar Portable Network Graphics.
+Penjelasan: Format ini mendukung kompresi lossless, yang berarti kualitas gambar tidak akan hilang saat kompresi. PNG sering digunakan untuk gambar yang membutuhkan latar belakang transparan, seperti logo. 
+5. .zip
+Jenis: File arsip.
+Penjelasan: Ekstensi ini digunakan untuk mengompresi dan menggabungkan beberapa file atau folder menjadi satu file arsip tunggal. Ini memudahkan penyimpanan, pengiriman, dan pengelolaan banyak file secara bersamaan. 
+
+5.Linux
+ls: Menampilkan isi direktori.
+cd: Pindah ke direktori lain.
+cat: Menampilkan isi seluruh konten file.
+cp: Menyalin file dari satu lokasi ke lokasi lain.
+mv: Memindahkan atau mengganti nama file. 
+Windows
+dir: Menampilkan isi direktori atau file dalam direktori.
+cd: Mengubah direktori kerja saat ini.
+type: Menampilkan konten file teks.
+copy: Menyalin satu atau lebih file dari satu lokasi ke lokasi lain.
+move: Memindahkan file dari satu lokasi ke lokasi lain, atau mengganti nama file. 
+
+6.Perbedaan utamanya adalah Terminal adalah perangkat lunak (emulator) yang menyediakan antarmuka untuk menjalankan shell, sementara Command Prompt (CMD) adalah shell (penerjemah perintah) spesifik di sistem operasi Windows, yang sekarang sering diintegrasikan ke dalam aplikasi Terminal yang lebih modern di Windows. Jadi, Terminal adalah "wadah" atau "aplikasi", sedangkan Command Prompt adalah salah satu jenis "program" yang berjalan di dalamnya atau program khusus dari Microsoft yang berfungsi sebagai penerjemah perintah. 
