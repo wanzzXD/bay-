@@ -57,3 +57,4 @@ move: Memindahkan file dari satu lokasi ke lokasi lain, atau mengganti nama file
 
 
 6.Perbedaan utamanya adalah Terminal adalah perangkat lunak (emulator) yang menyediakan antarmuka untuk menjalankan shell, sementara Command Prompt (CMD) adalah shell (penerjemah perintah) spesifik di sistem operasi Windows, yang sekarang sering diintegrasikan ke dalam aplikasi Terminal yang lebih modern di Windows. Jadi, Terminal adalah "wadah" atau "aplikasi", sedangkan Command Prompt adalah salah satu jenis "program" yang berjalan di dalamnya atau program khusus dari Microsoft yang berfungsi sebagai penerjemah perintah. 
+
